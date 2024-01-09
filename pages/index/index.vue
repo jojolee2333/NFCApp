@@ -6,8 +6,8 @@
             </view>
         </u-popup>
         <u-button @click="initNFC">打开</u-button> -->
-        <button @click="writeData">writeData</button>
-        <button @click="readData">readData</button>
+        <button @click="writeData" style="margin: 40rpx 0;">写数据(暂未实现)</button>
+        <button @click="readData">读数据</button>
         <div v-html="content"></div>
     </view>
 </template>
@@ -29,6 +29,13 @@
                 intentFiltersArray: [],
                 techListsArray: [],
                 content: '',
+                
+				formData: {
+					bind_code: '',
+					tagid: '',
+					time: null,
+					show: false,
+                }
             }
         },
         onLoad() {
@@ -181,8 +188,7 @@
                     str2 += str1.split(":")[i];
                 }
                 return str2;
-            }
-
+            },
         },
 
         //页面关闭时，关闭NFC监听

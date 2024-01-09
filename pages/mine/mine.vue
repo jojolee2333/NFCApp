@@ -1,11 +1,15 @@
 <template>
     <view class="main-box">
-        <u-popup :show="show" @close="close" @open="open">
-            <view>
+        <u-popup :show="show" @close="close" @open="open" mode="center">
+            <view class="pop-box">
                 <text>请刷卡读取数据</text>
             </view>
         </u-popup>
-        <u-button @click="show = true">打开</u-button>
+        <u-button @click="show = true">开始读取</u-button>
+        <view class="info-list">
+            <span>bind_code：{{formData.bind_code}}</span>
+            <span>tagid：{{formData.tagid}}</span>
+        </view>
     </view>
 </template>
 
@@ -16,7 +20,14 @@
     export default {
         data() {
             return {
-                show: false
+                show: false,
+                formData: {
+                    bind_code: '',
+                    tagid: '',
+                    time: null,
+                    show: false,
+
+                }
             }
         },
         methods: {
@@ -42,7 +53,6 @@
                         duration: 5000
                     })
                 } else {
-                    this.$refs.popup.open("top");
                     //初始化ncf 并开启监听
                     this.NFCInit();
                 }
@@ -141,9 +151,12 @@
                     console.log("NfcV", NfcA)
                     var test_A = NfcA.get(tagFromIntent)
                     console.log("get", test_A)
-                    test_A.close();
-                    test_A.connect();
-                    console.log("连接情况", test_A.isConnected())
+                    if(test_A) {
+                        test_A.close();
+                        test_A.connect();
+                        console.log("连接情况", test_A.isConnected())
+                    }
+                    
                     var tagUid = tagFromIntent.getId()
 
                     // 使用NfcV扇区读取，未完善
@@ -200,15 +213,17 @@
                     //当ic卡号不到10位的时候 前面自动添加0  补齐10位
                     icId = icId.length < 10 ? (Array(10).join(0) + icId).slice(-10) : icId;
                     if (icId) {
-                        this.$emit("changeNfc", {
+                        const shitObj = {
                             tagid: icId,
                             action: _action,
                             Tag: Tag,
                             tagFromIntent: tagFromIntent,
                             rawMsgs: s,
                             bind_code: bind_code,
-
-                        })
+                        };
+                        console.log(shitObj, 'shitObj');
+                        this.formData.tagid = icId;
+                        // this.$emit("changeNfc", shitObj)
                     } else {
                         uni.showToast({
                             title: "读取数据失败,请重新读取",
@@ -216,7 +231,7 @@
                         })
                     }
                     //关闭遮罩
-                    this.$refs.popup.close();
+                    this.show = false;
                 }
             },
             reverseTwo(str) {
@@ -351,6 +366,14 @@
 
 <style lang="scss" scoped>
     .main-box {
-        padding: 20px;
+        padding: 40rpx;
+        .pop-box {
+            padding: 40rpx;
+            border-radius: 20rpx;
+        }
+    }
+    .info-list {
+        display: flex;
+        flex-direction: column;
     }
 </style>
