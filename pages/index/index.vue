@@ -171,7 +171,7 @@
                     this.waiting.close();
 =======
                     console.log("连接情况shit", nfcATag.isConnected())
-                    const READ_COMMAND = [0x30, 0x03, 0x00];
+                    const READ_COMMAND = [0x30, 0x03];
                     this.sramData = nfcATag.transceive(READ_COMMAND);
                     setTimeout(()=>{
                         console.log(this.sramData, 'this.sramData');
