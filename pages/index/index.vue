@@ -154,9 +154,14 @@
                     // 写命令读NFC
                     const NfcA = plus.android.importClass('android.nfc.tech.NfcA');
                     let nfcATag = NfcA.get(tag);
+                    nfcATag.close();
                     nfcATag.connect();
-                    const READ_COMMAND = [0x30, 0x03, 0x00, 0x00];
+                    console.log("连接情况shit", nfcATag.isConnected())
+                    const READ_COMMAND = [0x30, 0x03];
                     this.sramData = nfcATag.transceive(READ_COMMAND);
+                    setTimeout(()=>{
+                        console.log(this.sramData, 'this.sramData');
+                    }, 2000)
                     this.popShow = false;
 
                 } catch (e) {
