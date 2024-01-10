@@ -7,7 +7,7 @@
         </u-popup>
         <u-button @click="initNFC">打开</u-button> -->
         <button @click="writeData" style="margin: 40rpx 0;">写数据(暂未实现)</button>
-        <button @click="readData">读数据</button>
+        <button @click="readData" style="margin: 0 0 40rpx 0;">读数据</button>
         <div v-html="content"></div>
     </view>
 </template>
@@ -29,13 +29,10 @@
                 intentFiltersArray: [],
                 techListsArray: [],
                 content: '',
-                
-				formData: {
-					bind_code: '',
-					tagid: '',
-					time: null,
-					show: false,
-                }
+
+                sramData: '',
+                intent: '', // 好像很重要
+                uID: '', // NFC卡ID
             }
         },
         onLoad() {
@@ -131,22 +128,40 @@
             writeData(intent) {
                 console.log(1231);
             },
+
             _read(intent) {
                 try {
                     this.content = "";
                     this.waiting.setTitle('请勿移开标签\n正在读取数据...');
-                    var tag = plus.android.importClass("android.nfc.Tag");
+                    let tag = plus.android.importClass("android.nfc.Tag");
                     tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-                    var bytesId = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
+                    
+                    let bytesId = intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
+                    this.intent = intent;
                     console.log("bytesId:" + (bytesId));
-                    this.waiting.close();
+                    this.uID = this.bytesToHexString(tag.getId());
                     this.content += "卡片字节数组ID：" + tag.getId() + "<br/>";
-                    this.content += "卡片16进制ID：" + this.bytesToHexString(tag.getId()) + "<br/>";
+                    this.content += "卡片16进制ID：" + this.uID + "<br/>";
                     var tagid = this.reverseTwo(this.bytesToHexString(tag.getId()));
                     this.content += "卡片16进制翻转ID：" + tagid + "<br/>";
                     this.content += "卡片10进制卡号：" + parseInt(tagid, 16) + "<br/>";
-
-                    console.log(this.content, 'content');
+                    
+                    // 写命令读NFC
+                    const NfcA = plus.android.importClass('android.nfc.tech.NfcA');
+                    let nfcATag = NfcA.get(tag);
+                    nfcATag.connect();
+                    const isConnected= nfcATag.isConnected() 
+                    console.log(isConnected, 'isConnected?');
+                    if(isConnected) {
+                        const READ_COMMAND = [0x30, 0x03, 0x00, 0x00];
+                        this.sramData = nfcATag.transceive(READ_COMMAND);
+                        // 打印sramData
+                        setTimeout(() => {
+                            console.log(this.sramData, 'this.sramData');
+                        }, 2000)
+                    }
+                    
+                    this.waiting.close();
 
                 } catch (e) {
                     console.error(e, 'e');
@@ -189,6 +204,7 @@
                 }
                 return str2;
             },
+        
         },
 
         //页面关闭时，关闭NFC监听

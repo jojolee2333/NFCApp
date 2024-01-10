@@ -268,6 +268,7 @@ var render = function () {
       _c(
         "v-uni-button",
         {
+          staticStyle: { margin: "0 0 40rpx 0" },
           attrs: { _i: 2 },
           on: {
             click: function ($event) {
