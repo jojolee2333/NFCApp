@@ -9,6 +9,11 @@
         <button @click="writeData" style="margin: 40rpx 0;">写数据(暂未实现)</button>
         <button @click="readData" style="margin: 0 0 40rpx 0;">读数据</button>
         <div v-html="content"></div>
+        <u-popup :show="popShow" @close="popShow=false" @open="popShow=true" mode="center">
+            <view class="pop-box">
+                <text>请将NFC标签靠近</text>
+            </view>
+        </u-popup>
     </view>
 </template>
 
@@ -20,7 +25,6 @@
     export default {
         data() {
             return {
-                waiting: '',
                 readyWriteData: false,
                 readyRead: false,
                 nfcAdapter: null,
@@ -33,6 +37,7 @@
                 sramData: '',
                 intent: '', // 好像很重要
                 uID: '', // NFC卡ID
+                popShow: false,
             }
         },
         onLoad() {
@@ -45,7 +50,7 @@
         methods: {
             listenNFCStatus() {
                 this.main = plus.android.runtimeMainActivity();
-                console.log(this.main, 'asda')
+                console.log(this.main, 'main')
                 var Intent = plus.android.importClass('android.content.Intent');
                 var Activity = plus.android.importClass('android.app.Activity');
                 var PendingIntent = plus.android.importClass('android.app.PendingIntent');
@@ -130,9 +135,9 @@
             },
 
             _read(intent) {
+                console.log('开始读取....');
                 try {
                     this.content = "";
-                    this.waiting.setTitle('请勿移开标签\n正在读取数据...');
                     let tag = plus.android.importClass("android.nfc.Tag");
                     tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
                     
@@ -149,7 +154,9 @@
                     // 写命令读NFC
                     const NfcA = plus.android.importClass('android.nfc.tech.NfcA');
                     let nfcATag = NfcA.get(tag);
+                    nfcATag.close();
                     nfcATag.connect();
+<<<<<<< HEAD
                     const isConnected= nfcATag.isConnected() 
                     console.log(isConnected, 'isConnected?');
                     if(isConnected) {
@@ -162,6 +169,15 @@
                     }
                     
                     this.waiting.close();
+=======
+                    console.log("连接情况shit", nfcATag.isConnected())
+                    const READ_COMMAND = [0x30, 0x03];
+                    this.sramData = nfcATag.transceive(READ_COMMAND);
+                    setTimeout(()=>{
+                        console.log(this.sramData, 'this.sramData');
+                    }, 2000)
+                    this.popShow = false;
+>>>>>>> 9560f3212b71af66c20c05c2be7a9347490dc249
 
                 } catch (e) {
                     console.error(e, 'e');
@@ -170,7 +186,7 @@
             },
             readData() {
                 this.readyRead = true;
-                this.waiting = plus.nativeUI.showWaiting("请将NFC标签靠近！");
+                this.popShow = true;
             },
             bytesToHexString(inarray) {
                 var i, j, x;
@@ -221,23 +237,8 @@
         align-items: center;
         justify-content: center;
     }
-
-    .logo {
-        height: 200rpx;
-        width: 200rpx;
-        margin-top: 200rpx;
-        margin-left: auto;
-        margin-right: auto;
-        margin-bottom: 50rpx;
-    }
-
-    .text-area {
-        display: flex;
-        justify-content: center;
-    }
-
-    .title {
-        font-size: 36rpx;
-        color: #8f8f94;
+    
+    .pop-box {
+        padding: 20px;
     }
 </style>

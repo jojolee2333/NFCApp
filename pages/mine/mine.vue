@@ -26,8 +26,8 @@
                     tagid: '',
                     time: null,
                     show: false,
-
-                }
+                },
+                sramData: '',
             }
         },
         methods: {
@@ -143,47 +143,61 @@
                     var Tag = plus.android.importClass('android.nfc.Tag');
                     var bind_codes;
                     var tagFromIntent = _intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-                    console.log("TAG", tagFromIntent)
                     var Ndef = plus.android.importClass("android.nfc.tech.Ndef")
                     var ndef = Ndef.get(tagFromIntent)
 
-                    var NfcA = plus.android.importClass("android.nfc.tech.NfcV")
+                    var NfcA = plus.android.importClass("android.nfc.tech.NfcA")
                     console.log("NfcV", NfcA)
-                    var test_A = NfcA.get(tagFromIntent)
-                    console.log("get", test_A)
-                    if(test_A) {
-                        test_A.close();
-                        test_A.connect();
-                        console.log("连接情况", test_A.isConnected())
+                    var nfcATag = NfcA.get(tagFromIntent)
+                    console.log("get", nfcATag)
+                    if(nfcATag) {
+                        nfcATag.close();
+                        nfcATag.connect();
+                        console.log("连接情况", nfcATag.isConnected())
+                        // const READ_COMMAND = [0x30, 0x03, 0x00, 0x00];
+                        var READ_COMMAND = new Uint8Array([
+                            0x30,
+                            0x03
+                        ]);
+                        console.log(READ_COMMAND, 'READ_COMMAND');
+                        this.sramData = nfcATag.transceive(READ_COMMAND);
+                        setTimeout(()=> {
+                            console.log(this.sramData, 'this.sramData');
+                        }, 4000)
                     }
                     
                     var tagUid = tagFromIntent.getId()
 
                     // 使用NfcV扇区读取，未完善
-                    // var blockAddress =127;//块地址
+                    // var blockAddress = 127;//块地址
                     // var blocknum = 5	
                     // var cmd = [];
-                    // cmd[0] = 0x22;
-                    // cmd[1] = 0x23;
-                    // for (var i in tagUid) {
-                    // 		console.log("传ID:",tagUid[i]);  
-                    // 		cmd.push(tagUid[i]);
-                    // }
-                    // cmd[10] = blockAddress & 0x0ff;
-                    // cmd[11] = (blocknum - 1) & 0x0ff;
+                    // cmd[0] = 0x30;
+                    // cmd[1] = 0x03;
+                    // let uid = '0442963AC21190';
+                    // // cmd.push(uid);
+                    // cmd[2] = 0x00;
+                    // cmd[3] = 0x00;
                     // console.log('cmd',cmd);
-                    // var response = test_A.transceive(cmd);
+                    // var response = nfcATag.transceive(cmd);
                     // console.log("读取数据：",response)
                     // var str1 = ""
                     // var str2 = ""
-                    // str1 = this.Bytes2HexString(response);
-                    // console.log("转化为1",str1)
-                    // str2 = this.utf8to16(this.hexToString(str1));
-                    // console.log("转化为2:",str2)
-
+                    // if(response) {
+                    //     str1 = this.Bytes2HexString(response);
+                    //     console.log("转化为1",str1)
+                    //     str2 = this.utf8to16(this.hexToString(str1));
+                    //     console.log("转化为2:",str2)
+                    // }
+                    
                     var bind_code = _intent.getByteArrayExtra(NfcAdapter.EXTRA_ID);
                     // ic卡号 进制转换 
                     bind_codes = this.Bytes2HexString(bind_code);
+                    
+                    //关闭遮罩
+                    this.show = false;
+   
+                    return;
 
                     //使用NDEF读取有效记录
                     var Parcelable = plus.android.importClass("android.os.Parcelable");
@@ -230,8 +244,6 @@
                             icon: 'none'
                         })
                     }
-                    //关闭遮罩
-                    this.show = false;
                 }
             },
             reverseTwo(str) {
