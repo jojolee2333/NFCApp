@@ -162,9 +162,7 @@
                         const READ_COMMAND = [0x30, 0x03];
                         this.sramData = nfcATag.transceive(READ_COMMAND);
                         // 打印sramData
-                        setTimeout(() => {
-                            console.log(this.sramData, 'this.sramData');
-                        }, 2000)
+                        console.log(this.sramData, 'this.sramData');
                     }
                     this.popShow = false;
 
