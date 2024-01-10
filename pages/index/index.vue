@@ -153,7 +153,7 @@
                     const isConnected= nfcATag.isConnected() 
                     console.log(isConnected, 'isConnected?');
                     if(isConnected) {
-                        const READ_COMMAND = [0x30, 0x03, 0x00, 0x00];
+                        const READ_COMMAND = [0x30, 0x03];
                         this.sramData = nfcATag.transceive(READ_COMMAND);
                         // 打印sramData
                         setTimeout(() => {
