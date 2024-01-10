@@ -155,8 +155,7 @@
                     const NfcA = plus.android.importClass('android.nfc.tech.NfcA');
                     let nfcATag = NfcA.get(tag);
                     nfcATag.close();
-                    nfcATag.connect();
-                    
+                    nfcATag.connect();    
                     const isConnected= nfcATag.isConnected()
                     console.log(isConnected, 'isConnected?');
                     if(isConnected) {
@@ -167,7 +166,6 @@
                             console.log(this.sramData, 'this.sramData');
                         }, 2000)
                     }
-                    
                     this.popShow = false;
 
                 } catch (e) {
