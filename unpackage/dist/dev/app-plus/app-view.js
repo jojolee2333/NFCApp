@@ -244,6 +244,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "recyclableRender", function() { return recyclableRender; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "components", function() { return components; });
 var components
+try {
+  components = {
+    uPopup: __webpack_require__(/*! @/uni_modules/uview-ui/components/u-popup/u-popup.vue */ 17)
+      .default,
+  }
+} catch (e) {
+  if (
+    e.message.indexOf("Cannot find module") !== -1 &&
+    e.message.indexOf(".vue") !== -1
+  ) {
+    console.error(e.message)
+    console.error("1. 排查组件名称拼写是否正确")
+    console.error(
+      "2. 排查组件是否符合 easycom 规范，文档：https://uniapp.dcloud.net.cn/collocation/pages?id=easycom"
+    )
+    console.error(
+      "3. 若组件不符合 easycom 规范，需手动引入，并在 components 中注册该组件"
+    )
+  } else {
+    throw e
+  }
+}
 var render = function () {
   var _vm = this
   var _h = _vm.$createElement
@@ -282,6 +304,33 @@ var render = function () {
         attrs: { _i: 3 },
         domProps: { innerHTML: _vm._s(_vm._$g(3, "v-html")) },
       }),
+      _c(
+        "u-popup",
+        {
+          attrs: { _i: 4 },
+          on: {
+            close: function ($event) {
+              return _vm.$handleViewEvent($event)
+            },
+            open: function ($event) {
+              return _vm.$handleViewEvent($event)
+            },
+          },
+        },
+        [
+          _c(
+            "uni-view",
+            { staticClass: _vm._$g(5, "sc"), attrs: { _i: 5 } },
+            [
+              _c("v-uni-text", { attrs: { _i: 6 } }, [
+                _vm._v("请将NFC标签靠近"),
+              ]),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
     ],
     1
   )
@@ -380,7 +429,7 @@ if(false) {}
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../codeTool/Hbuilder/HBuilderX/plugins/uniapp-cli/node_modules/css-loader/dist/runtime/api.js */ 10);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n.content {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n}\n.logo {\n    height: 200rpx;\n    width: 200rpx;\n    margin-top: 200rpx;\n    margin-left: auto;\n    margin-right: auto;\n    margin-bottom: 50rpx;\n}\n.text-area {\n    display: flex;\n    justify-content: center;\n}\n.title {\n    font-size: 36rpx;\n    color: #8f8f94;\n}\n", ""]);
+exports.push([module.i, "\n.content {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n}\n.pop-box {\n    padding: 20px;\n}\n", ""]);
 // Exports
 module.exports = exports;
 
