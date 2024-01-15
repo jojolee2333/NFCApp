@@ -184,7 +184,6 @@
                     const NfcA = plus.android.importClass('android.nfc.tech.NfcA');
                     let nfcATag = NfcA.get(tag);
                     nfcATag.close();
-<<<<<<< HEAD
                     nfcATag.connect();
                     console.log("连接情况shit", nfcATag.isConnected())
                     const READ_COMMAND = [0x30, 0x04];					//从block 4读取数据
@@ -193,17 +192,7 @@
                         console.log(this.sramData, 'this.sramData');	//芯片默认返回16个字节数据 取前三个字节画图
 						
                     }, 2000)
-=======
-                    nfcATag.connect();    
-                    const isConnected= nfcATag.isConnected()
-                    console.log(isConnected, 'isConnected?');
-                    if(isConnected) {
-                        const READ_COMMAND = [0x30, 0x03];
-                        this.sramData = nfcATag.transceive(READ_COMMAND);
-                        // 打印sramData
-                        console.log(this.sramData, 'this.sramData');
-                    }
->>>>>>> 395660b3da220af957df528478ca4bcd38e59e8b
+
                     this.popShow = false;
 
                 } catch (e) {
