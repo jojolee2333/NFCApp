@@ -335,6 +335,32 @@ var render = function () {
         1
       ),
       _c("qiun-data-charts", { attrs: { _i: 7 } }),
+      _c(
+        "v-uni-button",
+        {
+          staticStyle: { margin: "40rpx 0 0 0" },
+          attrs: { _i: 8 },
+          on: {
+            click: function ($event) {
+              return _vm.$handleViewEvent($event)
+            },
+          },
+        },
+        [_vm._v("停止生成数据")]
+      ),
+      _c(
+        "v-uni-button",
+        {
+          staticStyle: { margin: "40rpx 0 0 0" },
+          attrs: { _i: 9 },
+          on: {
+            click: function ($event) {
+              return _vm.$handleViewEvent($event)
+            },
+          },
+        },
+        [_vm._v("重新生成数据")]
+      ),
     ],
     1
   )
@@ -13448,7 +13474,7 @@ if(false) {}
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../codeTool/Hbuilder/HBuilderX/plugins/uniapp-cli/node_modules/css-loader/dist/runtime/api.js */ 19);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n.content {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n        justify-content: center;\n}\n.pop-box {\n        padding: 20px;\n}\n    \n    /* 请根据实际需求修改父元素尺寸，组件自动识别宽高 */\n.charts-box {\n\t    width: 100%;\n\t    height: 600px;\n}\n", ""]);
+exports.push([module.i, "\n.content {\n    display: flex;\n    flex-direction: column;\n    align-items: center;\n    justify-content: center;\n}\n.pop-box {\n    padding: 20px;\n}\n\n/* 请根据实际需求修改父元素尺寸，组件自动识别宽高 */\n.charts-box {\n    width: 100%;\n    height: 600px;\n}\n", ""]);
 // Exports
 module.exports = exports;
 
