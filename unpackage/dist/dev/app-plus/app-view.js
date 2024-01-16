@@ -251,6 +251,8 @@ try {
     qiunDataCharts:
       __webpack_require__(/*! @/uni_modules/qiun-data-charts/components/qiun-data-charts/qiun-data-charts.vue */ 57)
         .default,
+    uMask: __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module '@/uni_modules/uview-ui/components/u-mask/u-mask.vue'"); e.code = 'MODULE_NOT_FOUND'; throw e; }()))
+      .default,
   }
 } catch (e) {
   if (
@@ -335,6 +337,32 @@ var render = function () {
         1
       ),
       _c("qiun-data-charts", { attrs: { _i: 7 } }),
+      _c("uni-view", {
+        staticClass: _vm._$g(8, "sc"),
+        attrs: { _i: 8 },
+        on: {
+          click: function ($event) {
+            return _vm.$handleViewEvent($event)
+          },
+        },
+      }),
+      _c(
+        "u-mask",
+        { attrs: { _i: 9 } },
+        [
+          _c("uni-view", { class: _vm._$g(10, "c"), attrs: { _i: 10 } }),
+          _c("uni-view", {
+            staticClass: _vm._$g(11, "sc"),
+            attrs: { _i: 11 },
+            on: {
+              click: function ($event) {
+                return _vm.$handleViewEvent($event)
+              },
+            },
+          }),
+        ],
+        1
+      ),
     ],
     1
   )
@@ -13448,7 +13476,7 @@ if(false) {}
 var ___CSS_LOADER_API_IMPORT___ = __webpack_require__(/*! ../../../../../../software/HBuilderX.3.99.2023122611/HBuilderX/plugins/uniapp-cli/node_modules/css-loader/dist/runtime/api.js */ 19);
 exports = ___CSS_LOADER_API_IMPORT___(false);
 // Module
-exports.push([module.i, "\n.content {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n        justify-content: center;\n}\n.pop-box {\n        padding: 20px;\n}\n    \n    /* 请根据实际需求修改父元素尺寸，组件自动识别宽高 */\n.charts-box {\n\t    width: 100%;\n\t    height: 600px;\n}\n", ""]);
+exports.push([module.i, "\n.content {\n        display: flex;\n        flex-direction: column;\n        align-items: center;\n        justify-content: center;\n}\n.pop-box {\n        padding: 20px;\n}\n    \n    /* 请根据实际需求修改父元素尺寸，组件自动识别宽高 */\n.charts-box {\n\t    width: 100%;\n\t    height: 600px;\n}\n.icon-a-appenlarge {\n\t\tposition: absolute;\n\t\tright: -20rpx;\n\t\tbottom: 200rpx;\n\t\tbackground: transparent;\n\t\tcolor: #a7c2fa;\n}\n", ""]);
 // Exports
 module.exports = exports;
 

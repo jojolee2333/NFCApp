@@ -19,7 +19,12 @@
 		  :opts="opts"
 		  :chartData="chartData"
 		>
-		</qiun-data-charts> 
+		</qiun-data-charts>
+		<view class="rotate-mode-btn iconfont icon-a-appenlarge" @click="rotateMode"></view> 
+		<u-mask :show="isShowRotate">															
+			<view :class="maskClass"></view>
+			<view class="iconfont icon-close" @click="closeRotateMode"></view>
+		</u-mask>
     </view>
 </template>
 
@@ -278,26 +283,22 @@
 			  //模拟从服务器获取数据时的延时
 			setTimeout(() => {
 			    //模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-			    let tableData = {
-			        categories: [],  //需要从零开始画图 
+			    let res = {
+			        categories: ["2019","2022"],  //需要从零开始画图 
 			        series: [
 			          {
 			            name: "时间",
 			            lineType: "dash",
-			            data: []								  //data更新
+			            data: [1,2]								  //data更新
 			          },
 			        ]
 			      };
-				  
-				let param = {
-					token: VoltageCalculate(this.sramData)
-				}
-				let res = getList(param)
+			
 				// 将获得的数据放进categories[],series.data[]中
-				for (var i = 0; i < res.List.length; i++) {
-					tableData.categories.push(res.List[i].data)
-					tableData.series[0].data.push(res.List[i].data) //记得使用parseInt()转换数据格式为int格式
-				}
+				// for (var i = 0; i < 200; i++) {
+				// 	tableData.categories.push(i)
+				// 	tableData.series[0].data.push(this.VoltageCalculate(this.sramData)) //记得使用parseInt()转换数据格式为int格式
+				// }
 				  
 
 			    this.chartData = JSON.parse(JSON.stringify(res));
@@ -329,5 +330,12 @@
 	.charts-box {
 	    width: 100%;
 	    height: 600px;
+	}
+	.icon-a-appenlarge {
+		position: absolute;
+		right: -20rpx;
+		bottom: 200rpx;
+		background: transparent;
+		color: #a7c2fa;
 	}
 </style>
