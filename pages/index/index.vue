@@ -6,7 +6,7 @@
             </view>
         </u-popup>
         <u-button @click="initNFC">打开</u-button> -->
-        <button @click="writeData" style="margin: 40rpx 0;">写数据(暂未实现)</button>
+        <button @click="writeData" style="margin: 40rpx 0;">写数据</button>
         <button @click="readData" style="margin: 0 0 40rpx 0;">读数据</button>
         <div v-html="content"></div>
         <u-popup :show="popShow" @close="popShow=false" @open="popShow=true" mode="center">
@@ -14,11 +14,19 @@
                 <text>请将NFC标签靠近</text>
             </view>
         </u-popup>
-        <qiun-data-charts type="line" :opts="opts" :chartData="chartData">
-        </qiun-data-charts>
+        
+        <view class="charts-box">
+            <qiun-data-charts type="line" :opts="opts" :chartData="chartData">
+            </qiun-data-charts>
+        </view>
         
         <button @click="stopGenerateData" style="margin: 40rpx 0 0 0;">停止生成数据</button>
         <button @click="getServerData" style="margin: 40rpx 0 0 0;">重新生成数据</button>
+        <!-- <view class="rotate-mode-btn iconfont icon-a-appenlarge" @click="rotateMode"></view> -->
+        <!-- <u-mask :show="isShowRotate">
+         	<view :class="maskClass"></view>
+         	<view class="iconfont icon-close" @click="closeRotateMode"></view>
+         </u-mask> -->
     </view>
 </template>
 
@@ -47,6 +55,7 @@
                 intervalId: null, // 定时器ID
                 //您可以通过修改 config-ucharts.js 文件中下标为 ['line'] 的节点来配置全局默认参数，如都是默认参数，此处可以不传 opts 。实际应用过程中 opts 只需传入与全局默认参数中不一致的【某一个属性】即可实现同类型的图表显示不同的样式，达到页面简洁的需求。
                 opts: {
+                    rotate: true,
                     color: ["#1890FF", "#91CB74", "#FAC858", "#EE6666", "#73C0DE", "#3CA272", "#FC8452", "#9A60B4",
                         "#ea7ccc"
                     ],
@@ -75,7 +84,7 @@
         },
         onReady() {
             // this.listenNFCStatus();
-            this.getServerData();
+			this.getServerData();
         },
 
         methods: {
@@ -293,7 +302,7 @@
             
                     // 使用深拷贝避免引用问题，将服务器返回的数据赋值给图表数据
                     this.chartData = JSON.parse(JSON.stringify(res));
-                }, 5000); // 每隔1秒执行一次
+                }, 5000); // 每隔5秒执行一次
             },
             stopGenerateData() {
                 clearInterval(this.intervalId); // 清除之前启动的 setInterval
@@ -317,12 +326,19 @@
     }
 
     .pop-box {
-        padding: 20px;
+        padding: 40rpx;
     }
-
-    /* 请根据实际需求修改父元素尺寸，组件自动识别宽高 */
-    .charts-box {
-        width: 100%;
-        height: 600px;
-    }
+    
+	/* 请根据实际需求修改父元素尺寸，组件自动识别宽高 */
+	.charts-box {
+	    width: 100%;
+	    height: 1000rpx;
+	}
+	.icon-a-appenlarge {
+		position: absolute;
+		right: -20rpx;
+		bottom: 200rpx;
+		background: transparent;
+		color: #a7c2fa;
+	}
 </style>
