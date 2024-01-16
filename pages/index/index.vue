@@ -6,7 +6,7 @@
             </view>
         </u-popup>
         <u-button @click="initNFC">打开</u-button> -->
-        <button @click="writeData" style="margin: 40rpx 0;">写数据(暂未实现)</button>
+        <button @click="writeData" style="margin: 40rpx 0;">写数据</button>
         <button @click="readData" style="margin: 0 0 40rpx 0;">读数据</button>
         <div v-html="content"></div>
         <u-popup :show="popShow" @close="popShow=false" @open="popShow=true" mode="center">
@@ -49,14 +49,18 @@
 				opts: {
 				  color: ["#1890FF","#91CB74","#FAC858","#EE6666","#73C0DE","#3CA272","#FC8452","#9A60B4","#ea7ccc"],
 				  padding: [15,10,0,15],
-				  enableScroll: false,
+				  enableScroll: true,
 				  legend: {},
 				  xAxis: {
+					  
 				    disableGrid: true
 				  },
 				  yAxis: {
+					title:'123',
 				    gridType: "dash",
-				    dashLength: 2
+				    dashLength: 2,
+					min:-700,
+					max: 700
 				  },
 				  extra: {
 				    line: {
@@ -73,7 +77,7 @@
         },
         onReady() {
             this.listenNFCStatus();
-			 this.getServerData();
+			this.getServerData();
         },
 
         methods: {
@@ -274,16 +278,28 @@
 			  //模拟从服务器获取数据时的延时
 			setTimeout(() => {
 			    //模拟服务器返回数据，如果数据格式和标准格式不同，需自行按下面的格式拼接
-			    let res = {
-			        categories: ["2018","2019","2020","2021","2022","2023"],  //需要从零开始画图 
+			    let tableData = {
+			        categories: [],  //需要从零开始画图 
 			        series: [
 			          {
-			            name: "成交量A",
+			            name: "时间",
 			            lineType: "dash",
-			            data: [35,8,25,37,4,20]								  //data更新
+			            data: []								  //data更新
 			          },
 			        ]
 			      };
+				  
+				let param = {
+					token: VoltageCalculate(this.sramData)
+				}
+				let res = getList(param)
+				// 将获得的数据放进categories[],series.data[]中
+				for (var i = 0; i < res.List.length; i++) {
+					tableData.categories.push(res.List[i].data)
+					tableData.series[0].data.push(res.List[i].data) //记得使用parseInt()转换数据格式为int格式
+				}
+				  
+
 			    this.chartData = JSON.parse(JSON.stringify(res));
 			  }, 500);
 			},
