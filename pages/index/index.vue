@@ -1,13 +1,7 @@
 <template>
     <view class="content">
-        <!-- <u-popup :show="show" @close="close" @open="open">
-            <view>
-                <text>请刷卡读取数据</text>
-            </view>
-        </u-popup>
-        <u-button @click="initNFC">打开</u-button> -->
-        <button @click="writeData" style="margin: 40rpx 0;">写数据</button>
-        <button @click="readData" style="margin: 0 0 40rpx 0;">读数据</button>
+        <!-- <button @click="writeData" style="margin: 40rpx 0;">写数据</button> -->
+        <button @click="readData" style="margin: 40rpx 0;">读数据</button>
         <div v-html="content"></div>
         <u-popup :show="popShow" @close="popShow=false" @open="popShow=true" mode="center">
             <view class="pop-box">
@@ -19,9 +13,10 @@
             <qiun-data-charts type="line" :opts="opts" :chartData="chartData">
             </qiun-data-charts>
         </view>
-        
+        <button @click="rotateChart" style="margin: 40rpx 0 0 0;">旋转</button>
         <button @click="stopGenerateData" style="margin: 40rpx 0 0 0;">停止生成数据</button>
         <button @click="getServerData" style="margin: 40rpx 0 0 0;">重新生成数据</button>
+        
         <!-- <view class="rotate-mode-btn iconfont icon-a-appenlarge" @click="rotateMode"></view> -->
         <!-- <u-mask :show="isShowRotate">
          	<view :class="maskClass"></view>
@@ -55,7 +50,8 @@
                 intervalId: null, // 定时器ID
                 //您可以通过修改 config-ucharts.js 文件中下标为 ['line'] 的节点来配置全局默认参数，如都是默认参数，此处可以不传 opts 。实际应用过程中 opts 只需传入与全局默认参数中不一致的【某一个属性】即可实现同类型的图表显示不同的样式，达到页面简洁的需求。
                 opts: {
-                    rotate: true,
+                    update: true,
+                    rotate: false,
                     color: ["#1890FF", "#91CB74", "#FAC858", "#EE6666", "#73C0DE", "#3CA272", "#FC8452", "#9A60B4",
                         "#ea7ccc"
                     ],
@@ -63,7 +59,10 @@
                     enableScroll: false,
                     legend: {},
                     xAxis: {
-                        disableGrid: true
+                        disableGrid: true,
+                        calibration: true,
+                        min: 0,
+                        max: 100,
                     },
                     yAxis: {
                         gridType: "dash",
@@ -284,11 +283,11 @@
                 clearInterval(this.intervalId);
                 // 初始化数据
                 let res = {
-                    categories: ["2018", "2019", "2020", "2021", "2022", "2023"],
+                    categories: [0, 1, 2, 3, 4, 5],
                     series: [{
                         name: "成交量A",
                         lineType: "dash",
-                        data: [35, 8, 25, 37, 4, 20]
+                        data: [23, 9, 25, 17, 12, 20]
                     }]
                 };
             
@@ -298,7 +297,7 @@
                     res.categories.push((parseInt(res.categories.slice(-1)[0]) + 1).toString());
             
                     // 递增 series 的 data 长度，并生成随机数
-                    res.series[0].data.push(Math.floor(Math.random() * 50) + 1);
+                    res.series[0].data.push(Math.floor(Math.random() * 30) + 1);
             
                     // 使用深拷贝避免引用问题，将服务器返回的数据赋值给图表数据
                     this.chartData = JSON.parse(JSON.stringify(res));
@@ -308,11 +307,16 @@
                 clearInterval(this.intervalId); // 清除之前启动的 setInterval
                 console.log(`定时器被成功清除，intervalId: ${this.intervalId}`);
             },
+            
+            rotateChart() {
+                this.opts.rotate = !this.opts.rotate;
+            }
         },
 
-        //页面关闭时，关闭NFC监听
+        //页面关闭
         onUnload() {
-
+            clearInterval(this.intervalId); // 清除setInterval
+            // todo 关闭NFC监听
         }
     }
 </script>
