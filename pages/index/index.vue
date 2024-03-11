@@ -1,7 +1,17 @@
 <template>
     <view class="content">
         <!-- <button @click="writeData" style="margin: 40rpx 0;">写数据</button> -->
-        <button @click="readData" style="margin: 40rpx 0;">读数据</button>
+        <view class="title-box">
+            NFC Body-Temperature Reader
+        </view>
+        <view class="nfc-info-box">
+            <span>Retrieved from NHS3000</span>
+            <span>NFC ID: 04:99:95:E8</span>
+        </view>
+        <view class="btn-box">
+            <button class="read-btn" @click="readData">读数据</button>
+            <button class="spin-btn" @click="rotateChart">旋转</button>
+        </view>
         <div v-html="content"></div>
         <u-popup :show="popShow" @close="popShow=false" @open="popShow=true" mode="center">
             <view class="pop-box">
@@ -13,10 +23,11 @@
             <qiun-data-charts type="line" :opts="opts" :chartData="chartData">
             </qiun-data-charts>
         </view>
-        <button @click="rotateChart" style="margin: 40rpx 0 0 0;">旋转</button>
-        <button @click="stopGenerateData" style="margin: 40rpx 0 0 0;">停止生成数据</button>
-        <button @click="getServerData" style="margin: 40rpx 0 0 0;">重新生成数据</button>
         
+        <view class="btn-box">
+            <button class="stop-btn" @click="stopGenerateData">停止生成数据</button>
+            <button class="generate-btn" @click="getServerData">重新生成数据</button>
+        </view>
         <!-- <view class="rotate-mode-btn iconfont icon-a-appenlarge" @click="rotateMode"></view> -->
         <!-- <u-mask :show="isShowRotate">
          	<view :class="maskClass"></view>
@@ -85,7 +96,7 @@
         },
         onReady() {
             // this.listenNFCStatus();
-			this.getServerData();
+			// this.getServerData();
         },
 
         methods: {
@@ -305,6 +316,7 @@
                     this.chartData = JSON.parse(JSON.stringify(res));
                 }, 2000); // 每隔5秒执行一次
             },
+            
             stopGenerateData() {
                 clearInterval(this.intervalId); // 清除之前启动的 setInterval
                 console.log(`定时器被成功清除，intervalId: ${this.intervalId}`);
@@ -324,13 +336,63 @@
 </script>
 
 <style>
+    /* #536DFE */
     .content {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        /* align-items: center;
+        justify-content: center; */
     }
-
+    
+    .title-box {
+        padding: 24rpx 0 0 24rpx;
+        color: #536DFE;
+        font-weight: bold;
+        font-size: 38rpx;
+    }
+    
+    .nfc-info-box {
+        padding: 24rpx 0 0 24rpx;
+        color: #536DFE;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        
+    }
+    
+    .btn-box {
+        margin: 40rpx 0 20rpx;
+        padding: 0 60rpx;
+        display: flex;
+        .read-btn {
+            border: solid 2rpx #536DFE;
+            color: #FFF;
+            background-color: #536DFE;
+            width: 260rpx;
+        }
+        
+        .spin-btn {
+            border: solid 2rpx #536DFE;
+            color: #536DFE;
+            background-color: #FFF;
+            width: 260rpx;
+        }
+        
+        .stop-btn {
+            border: solid 2rpx #536DFE;
+            color: #FFF;
+            background-color: #536DFE;
+        }
+        
+        .generate-btn {
+            border: solid 2rpx #536DFE;
+            color: #536DFE;
+            background-color: #FFF;
+        }
+    }
+    
+    
+    
     .pop-box {
         padding: 40rpx;
     }
